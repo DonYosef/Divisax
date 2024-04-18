@@ -1,7 +1,4 @@
 package com.mycompany.divisax;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Scanner;
 
 public class Divisax {
@@ -11,15 +8,14 @@ public class Divisax {
         ComunicacionAPI comunica = new ComunicacionAPI();
         ConversorDivisas conver = new ConversorDivisas();
         
-        Scanner teclado = new Scanner(System.in);
-        System.out.println(" -------  Ejemplo de divisas disponibles para conversión -------- \n"+
-"		[\"USD\",\"United States Dollar\"],\n" +
-"		[\"CLP\",\"Chilean Peso\"],\n" +
-"		[\"BRL\",\"Brazilian Real\"],\n" +
-"		[\"ANG\",\"Netherlands Antillian Guilder\"],\n" +
-"		[\"AOA\",\"Angolan Kwanza\"],\n" +
-"		[\"ARS\",\"Argentine Peso\"],\n" +
-"		[\"BBD\",\"Barbados Dollar\"] etc. etc. ");
+        try{
+                    Scanner teclado = new Scanner(System.in);
+        System.out.println("""
+                            -------  Ejemplo de divisas disponibles para conversi\u00f3n -------- 
+                           \t\t["USD","United States Dollar"],
+                           \t\t["CLP","Chilean Peso"],
+                           \t\t["BRL","Brazilian Real"],
+                           \t\t["ARS","Argentine Peso""");
         System.out.println("----------------------------------------------------------------");
         System.out.println("Ingrese divisa que desea convetir.. ");
         System.out.println("De:  ");
@@ -27,16 +23,16 @@ public class Divisax {
         System.out.println("Hacía divisa: ");
         String target = teclado.nextLine();
         System.out.println("Ingrese cantidad a convertir: ");
-        int cantidadAConvertir = teclado.nextInt();
+        Double cantidadAConvertir = teclado.nextDouble();
         
-            Divisa resultado = comunica.informacionDivisas(base, target);
-            System.out.println("La tasa de conversion aplicada es: "+resultado);
+            Divisa resultado = comunica.informacionDivisas(base, target);            
+            Double resultadoDecimal = conver.convercionDeMoneda(resultado.conversion_rate(), cantidadAConvertir);
             
-            Double result = conver.convercionDeMoneda(resultado.conversion_rate(),cantidadAConvertir);
-            BigDecimal redondeado = BigDecimal.valueOf(result).setScale(2, RoundingMode.HALF_UP);
+            System.out.println(resultadoDecimal);
+        }catch(NullPointerException e){
+            System.out.println("Por favor ingrese un moneda valida a convertir siguiendo el formato indicado");
+        }
             
-            System.out.println(redondeado); 
-
 
         
 
