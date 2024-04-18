@@ -1,4 +1,5 @@
 package com.mycompany.divisax;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Divisax {
@@ -7,6 +8,7 @@ public class Divisax {
         
         ComunicacionAPI comunica = new ComunicacionAPI();
         ConversorDivisas conver = new ConversorDivisas();
+        Double resultadoFinal = 0.0;
         
         try{
                     Scanner teclado = new Scanner(System.in);
@@ -28,9 +30,17 @@ public class Divisax {
             Divisa resultado = comunica.informacionDivisas(base, target);            
             Double resultadoDecimal = conver.convercionDeMoneda(resultado.conversion_rate(), cantidadAConvertir);
             
-            System.out.println(resultadoDecimal);
+            if(target.equalsIgnoreCase("USD")){
+                resultadoFinal = conver.redondear(resultadoDecimal);
+            }else{
+                resultadoFinal = conver.redondearSinDecimal(resultadoDecimal);
+            }
+            
+            System.out.println(resultadoFinal);
         }catch(NullPointerException e){
             System.out.println("Por favor ingrese un moneda valida a convertir siguiendo el formato indicado");
+        }catch(InputMismatchException e){
+            System.out.println("Por favor ingrese una cantidad valida en el formato, ejemplo: 10,22");
         }
             
 
